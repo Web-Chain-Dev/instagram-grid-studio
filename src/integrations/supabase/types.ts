@@ -14,7 +14,130 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      grids: {
+        Row: {
+          avatar_url: string | null
+          bio: string
+          category: string
+          created_at: string
+          display_name: string
+          followers: string
+          following: string
+          id: string
+          name: string
+          owner_id: string | null
+          username: string
+          verified: boolean
+          website: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string
+          category?: string
+          created_at?: string
+          display_name?: string
+          followers?: string
+          following?: string
+          id?: string
+          name?: string
+          owner_id?: string | null
+          username?: string
+          verified?: boolean
+          website?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string
+          category?: string
+          created_at?: string
+          display_name?: string
+          followers?: string
+          following?: string
+          id?: string
+          name?: string
+          owner_id?: string | null
+          username?: string
+          verified?: boolean
+          website?: string
+        }
+        Relationships: []
+      }
+      highlights: {
+        Row: {
+          cover_url: string | null
+          created_at: string
+          grid_id: string
+          id: string
+          position: number
+          title: string
+        }
+        Insert: {
+          cover_url?: string | null
+          created_at?: string
+          grid_id: string
+          id?: string
+          position?: number
+          title?: string
+        }
+        Update: {
+          cover_url?: string | null
+          created_at?: string
+          grid_id?: string
+          id?: string
+          position?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "highlights_grid_id_fkey"
+            columns: ["grid_id"]
+            isOneToOne: false
+            referencedRelation: "grids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          created_at: string
+          grid_id: string
+          id: string
+          kind: string
+          media_type: string
+          media_url: string
+          pinned: boolean
+          position: number
+        }
+        Insert: {
+          created_at?: string
+          grid_id: string
+          id?: string
+          kind?: string
+          media_type?: string
+          media_url: string
+          pinned?: boolean
+          position?: number
+        }
+        Update: {
+          created_at?: string
+          grid_id?: string
+          id?: string
+          kind?: string
+          media_type?: string
+          media_url?: string
+          pinned?: boolean
+          position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_grid_id_fkey"
+            columns: ["grid_id"]
+            isOneToOne: false
+            referencedRelation: "grids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
