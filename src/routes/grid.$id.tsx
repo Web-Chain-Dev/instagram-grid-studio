@@ -78,6 +78,7 @@ function GridPage() {
     const to = posts.findIndex((p) => p.id === over.id);
     const moved = posts[from];
     const target = posts[to];
+    if (!moved || !target) return;
     let next = arrayMove(posts, from, to);
     // Crossing the pinned boundary pins / unpins the post, like dragging it in or out of the pinned row.
     if (moved.pinned !== target.pinned) {
@@ -114,7 +115,7 @@ function GridPage() {
       // New uploads go to the top of the unpinned section, like a fresh Instagram post.
       const minPos = Math.min(0, ...posts.filter((p) => !p.pinned).map((p) => p.position));
       for (let i = 0; i < list.length; i++) {
-        const f = list[i];
+        const f = list[i]!;
         const k: PostKind = kind === "photo" && f.type.startsWith("video") ? "reel" : kind;
         await addPost(id, f, k, minPos - (list.length - i));
       }
@@ -268,8 +269,8 @@ function GridPage() {
             <div className="mx-auto my-3 aspect-[3/4] w-32 overflow-hidden rounded-md bg-ig-tile"><Media post={activePost} /></div>
             <SheetButton onClick={() => {
               const p = activePost; setActivePost(null);
-              if (!p.pinned && posts.filter((x) => x.pinned).length >= 3) return toast.error("Instagram allows up to 3 pinned posts");
-              run(() => updatePost(p.id, { pinned: !p.pinned }));
+              if (!p.pinned && posts.filter((x) => x.pinned).length >= 3) { toast.error("Instagram allows up to 3 pinned posts"); return; }
+              void run(() => updatePost(p.id, { pinned: !p.pinned }));
             }}>
               <PinIcon className="h-5 w-5" /> {activePost.pinned ? "Unpin from profile" : "Pin to your profile"}
             </SheetButton>
